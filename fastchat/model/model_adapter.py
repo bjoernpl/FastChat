@@ -1543,6 +1543,17 @@ class OpenLLaMaOpenInstructAdapter(BaseModelAdapter):
 
     def get_default_conv_template(self, model_path: str) -> Conversation:
         return get_conv_template("alpaca")
+    
+class DeLlamaInstructAdapter(BaseModelAdapter):
+    """The model adapter for Llama2-Instruct"""
+
+    def match(self, model_path: str):
+        return (
+            "llama-2" in model_path.lower() and "de-instruct" in model_path.lower()
+        )
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("alpaca")
 
 
 # Note: the registration order matters.
@@ -1600,6 +1611,7 @@ register_model_adapter(Lamma2ChineseAdapter)
 register_model_adapter(VigogneInstructAdapter)
 register_model_adapter(VigogneChatAdapter)
 register_model_adapter(OpenLLaMaOpenInstructAdapter)
+register_model_adapter(DeLlamaInstructAdapter)
 
 # After all adapters, try the default base adapter.
 register_model_adapter(BaseModelAdapter)
