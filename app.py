@@ -76,7 +76,7 @@ with gr.Blocks(css=CSS) as demo:
         gr.Markdown("# 🦁 LeoLM HessianAI 7B Chat 🦁")
     with gr.Row():
         #chatbot = gr.Chatbot().style(height=500)
-        chatbot = gr.Chatbot(elem_id="chatbot", latex_delimiters=[{ "left": "$$", "right": "$$", "display": True }], avatar_images=("sheep.png", "leo.png"))
+        chatbot = gr.Chatbot(elem_id="chatbot", latex_delimiters=[{ "left": "$$", "right": "$$", "display": True }])
     with gr.Row():
         message = gr.Textbox(
             label="Was möchtest du wissen?",
