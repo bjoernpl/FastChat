@@ -389,6 +389,34 @@ register_conv_template(
     )
 )
 
+
+register_conv_template(
+    Conversation(
+        name="share-gpt-de",
+        system_message="SYSTEM: Es folgt eine Unterhaltung zwischen einem neugierigen Benutzer und einem KI Assistenten. Der Assistent gibt hilfreiche, detaillierte und höfliche Antworten auf die Fragen des Benutzers.",
+        roles=("USER", "ASSISTENT"),
+        messages=(),
+        offset=0,
+        sep_style=SeparatorStyle.ADD_COLON_TWO,
+        sep="\n\n",
+        sep2=" ",
+    )
+)
+
+register_conv_template(
+    Conversation(
+        name="leolm",
+        system_message="""<|im_start|>system
+Es folgt eine Unterhaltung zwischen einem neugierigen Benutzer und einem KI Assistenten. Der Assistent gibt hilfreiche, detaillierte und höfliche Antworten auf die Fragen des Benutzers.<|im_end|>""",
+        roles=("<|im_start|>user\n", "<|im_start|>assistant\n"),
+        messages=(),
+        offset=0,
+        sep_style=SeparatorStyle.NO_COLON_TWO,
+        sep="<|im_end|>\n",
+        sep2="<|im_end|>\n",
+    )
+)
+
 # ChatGLM default template
 register_conv_template(
     Conversation(

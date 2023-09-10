@@ -63,7 +63,7 @@ class BaseModelAdapter:
                 model_path,
                 use_fast=self.use_fast_tokenizer,
                 revision=revision,
-                trust_remote_code=True,
+                trust_remote_code=True
             )
         except TypeError:
             tokenizer = AutoTokenizer.from_pretrained(
@@ -1219,22 +1219,6 @@ class StarChatAdapter(BaseModelAdapter):
         return get_conv_template("starchat")
 
 
-class Llama2Adapter(BaseModelAdapter):
-    """The model adapter for llama-2"""
-
-    def match(self, model_path: str):
-        return "llama-2" in model_path.lower()
-
-    def load_model(self, model_path: str, from_pretrained_kwargs: dict):
-        model, tokenizer = super().load_model(model_path, from_pretrained_kwargs)
-        model.config.eos_token_id = tokenizer.eos_token_id
-        model.config.pad_token_id = tokenizer.pad_token_id
-        return model, tokenizer
-
-    def get_default_conv_template(self, model_path: str) -> Conversation:
-        return get_conv_template("llama-2")
-
-
 class CuteGPTAdapter(BaseModelAdapter):
     """The model adapter for llama-2"""
 
@@ -1549,15 +1533,28 @@ class DeLlamaInstructAdapter(BaseModelAdapter):
 
     def match(self, model_path: str):
         return (
-            "llama-2" in model_path.lower() and "de-instruct" in model_path.lower()
+            "llama-2-7b-de" in model_path.lower()
         )
 
     def get_default_conv_template(self, model_path: str) -> Conversation:
-        return get_conv_template("alpaca")
+        return get_conv_template("share-gpt-de")
+    
+class LeoLMChatAdapter(BaseModelAdapter):
+    """The model adapter for Llama2-Instruct"""
+
+    def match(self, model_path: str):
+        return (
+            "leolm" in model_path.lower()
+        )
+
+    def get_default_conv_template(self, model_path: str) -> Conversation:
+        return get_conv_template("leolm")
 
 
 # Note: the registration order matters.
 # The one registered earlier has a higher matching priority.
+register_model_adapter(LeoLMChatAdapter)
+register_model_adapter(DeLlamaInstructAdapter)
 register_model_adapter(PeftModelAdapter)
 register_model_adapter(VicunaAdapter)
 register_model_adapter(AiroborosAdapter)
@@ -1599,7 +1596,6 @@ register_model_adapter(NousHermesAdapter)
 register_model_adapter(PythiaAdapter)
 register_model_adapter(InternLMChatAdapter)
 register_model_adapter(StarChatAdapter)
-register_model_adapter(Llama2Adapter)
 register_model_adapter(CuteGPTAdapter)
 register_model_adapter(OpenOrcaAdapter)
 register_model_adapter(WizardCoderAdapter)
@@ -1611,7 +1607,7 @@ register_model_adapter(Lamma2ChineseAdapter)
 register_model_adapter(VigogneInstructAdapter)
 register_model_adapter(VigogneChatAdapter)
 register_model_adapter(OpenLLaMaOpenInstructAdapter)
-register_model_adapter(DeLlamaInstructAdapter)
+
 
 # After all adapters, try the default base adapter.
 register_model_adapter(BaseModelAdapter)
