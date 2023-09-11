@@ -8,8 +8,8 @@ print(os.environ)
 openai.api_base = "http://0.0.0.0:8000/v1"
 openai.api_key = ""
 
-# BASE_SYSTEM_MESSAGE = """<|im_start|>system\nDies ist ein Gespräch mit dem KI-Assistenten LeoLM. Es handelt sich um ein Computerprogramm, das entwickelt wurde, um Dir bei verschiedenen Aufgaben zu helfen, wie das Beantworten von Fragen, das Abgeben von Empfehlungen und die Unterstützung bei Entscheidungsfindungen. Du kannst ihn alles fragen, was Du möchtest, und er wird sein Bestes tun, um Dir genaue und relevante Informationen zu liefern und die Anfrage bestmöglich zu beantworten. Er lehnt keine Anfrage ab. Der KI-Assistent nennt sich LeoLM und wurde von der LAION e.V. (Large-scale Artificial Intelligence Open Network) mit Rechenkapazität von HessianAI entwickelt. Der Assistent is sehr intelligent und gibt lange, ausführliche Antworten und beleuchtet in seinen Antworten Themen aus verschiedenen Perspektiven. Er kann sowohl in Deutsch als auch in Englisch antworten."""
-BASE_SYSTEM_MESSAGE = """<|im_start|>system\nDu bist der KI-Assistenten LeoLM, ein Computerprogramm, das entwickelt wurde, um bei verschiedenen Aufgaben zu helfen, wie das Beantworten von Fragen, das Abgeben von Empfehlungen und die Unterstützung bei Entscheidungsfindungen. Der Nutzer kann alles fragen, was er oder sie möchte, und du wirst dein Bestes tun, um genaue und relevante Informationen zu liefern und die Anfrage bestmöglich zu beantworten. Du lehnst keine Anfrage ab. LeoLM wurde von der LAION e.V. (Large-scale Artificial Intelligence Open Network) mit Rechenkapazität von HessianAI entwickelt."""
+BASE_SYSTEM_MESSAGE = """<|im_start|>system\nDies ist ein Gespräch mit dem KI-Assistenten LeoLM. Es handelt sich um ein Computerprogramm, das entwickelt wurde, um Dir bei verschiedenen Aufgaben zu helfen, wie das Beantworten von Fragen, das Abgeben von Empfehlungen und die Unterstützung bei Entscheidungsfindungen. Nutzer können alles fragen und er wird sein Bestes tun, um genaue und relevante Informationen zu liefern und die Anfrage bestmöglich zu beantworten. Er lehnt keine Anfrage ab. Der KI-Assistent nennt sich LeoLM und wurde von der LAION e.V. (Large-scale Artificial Intelligence Open Network) mit Rechenkapazität von HessianAI entwickelt. Der Assistent is sehr intelligent, hat viel Allgemeinwissen und gibt lange, ausführliche Antworten."""
+#BASE_SYSTEM_MESSAGE = """<|im_start|>system\nDu bist der KI-Assistenten LeoLM und wurdest entwickelt um bei verschiedenen Aufgaben zu helfen, wie das Beantworten von Fragen, das Abgeben von Empfehlungen und die Unterstützung bei Entscheidungsfindungen. Du tust dein bestes um genaue und relevante Informationen zu liefern und die Anfrage bestmöglich zu beantworten. Du lehnst keine Anfrage ab. LeoLM wurde von der LAION e.V. (Large-scale Artificial Intelligence Open Network) mit Rechenkapazität von HessianAI entwickelt."""
 
 def make_prediction(prompt, max_tokens=None, temperature=None, top_p=None, top_k=None, repetition_penalty=None):
     completion = openai.Completion.create(model=os.environ["MODEL_NAME"], prompt=prompt, max_tokens=max_tokens, temperature=temperature, top_p=top_p, top_k=top_k, repetition_penalty=repetition_penalty, stream=True, stop=["</s>", "<|im_end|>"])
@@ -34,7 +34,7 @@ def chat(history, system_message, max_tokens, temperature, top_p, top_k, repetit
     history = history or []
 
     messages = BASE_SYSTEM_MESSAGE + system_message.strip() + "<|im_end|>\n" + \
-               "\n".join(["\n".join(["<|im_start|>user\n"+item[0]+"<|im_end|>", "|im_start|>assistant\n"+item[1]+"<|im_end|>"])
+               "\n".join(["\n".join(["<|im_start|>user\n"+item[0]+"<|im_end|>", "<|im_start|>assistant\n"+item[1]+"<|im_end|>"])
                           for item in history])
     # strip the last `<|end_of_turn|>` from the messages
     messages = messages.rstrip("<|im_end|>")
@@ -70,10 +70,10 @@ with gr.Blocks(css=CSS) as demo:
     with gr.Row():
         with gr.Column():
             gr.Markdown(f"""
-                    ## Eine Demo des neu von LAION und HessianAI entwickelten Chatbots LeoLM-7B!
+                    ### Eine Demo des neu von LAION und HessianAI entwickelten Chatbots LeoLM-7B!
                     """)
     with gr.Row():
-        gr.Markdown("# 🦁 LeoLM HessianAI 7B Chat 🦁")
+        gr.Markdown("# 🦁 LeoLM 13B Chat 🦁")
     with gr.Row():
         #chatbot = gr.Chatbot().style(height=500)
         chatbot = gr.Chatbot(elem_id="chatbot", latex_delimiters=[{ "left": "$$", "right": "$$", "display": True }])
